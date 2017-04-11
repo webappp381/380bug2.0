@@ -29,7 +29,8 @@
                     Post #${entry.id}:
                     <a href="<c:url value="/ticket/view/${entry.id}" />">
                         <c:out value="${entry.subject}" /></a>
-                    (Post by: <c:out value="${entry.customerName}" />)                    
+                    (Post by: <c:out value="${entry.customerName}" />) 
+                     
                     <security:authorize access="hasRole('ADMIN') or principal.username=='${entry.customerName}'">            
                         [<a href="<c:url value="/ticket/edit/${entry.id}" />">Edit</a>]
                     </security:authorize>
@@ -40,5 +41,8 @@
                 </c:forEach>
             </c:otherwise>
         </c:choose>
+                    
+                    
+                    
     </body>
 </html>

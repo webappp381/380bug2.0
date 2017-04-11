@@ -1,5 +1,6 @@
 package edu.ouhk.comps380f.controller;
 
+import edu.ouhk.comps380f.dao.ReplyTicketRepository;
 import edu.ouhk.comps380f.dao.TicketRepository;
 import edu.ouhk.comps380f.model.Attachment;
 import edu.ouhk.comps380f.model.ReplyTicket;
@@ -29,6 +30,9 @@ public class TicketController {
   
     @Autowired
     TicketRepository ticketRepo;
+    
+     @Autowired
+    ReplyTicketRepository replyTicketRepo;
   
     private volatile int TICKET_ID_SEQUENCE = 1;
    
@@ -38,8 +42,10 @@ public class TicketController {
     
     @RequestMapping(value = {"", "list"}, method = RequestMethod.GET)
     public String list(ModelMap model) {
+        
         model.addAttribute("ticketDatabase", ticketRepo.findAll());
-     //   model.addAttribute("replyTicketDatabase",replyTicketDatabase );
+        //System.out.println("this is");
+        //System.out.println("here: " + replyTicketRepo.findAll());       
         return "list";
     }
     
@@ -47,20 +53,24 @@ public class TicketController {
     @RequestMapping(value = "view/{ticketId}", method = RequestMethod.GET)
     public ModelAndView view(@PathVariable("ticketId") int ticketId) {
         Ticket ticket = this.ticketRepo.findById(ticketId);
+        
         //List<ReplyTicket> selectedReply = new ArrayList<>();
-        Map<Long, ReplyTicket> OneReply = new LinkedHashMap<>();
+        //Map<Long, ReplyTicket> OneReply = new LinkedHashMap<>();
+        //OneReply = replyTicketRepo.findParts(ticketId);
         //if selectedReply refid=ticketid -> OneReply
-       for(int i=0;i<ticket.getReplyId().size();i++){
-         OneReply.put(Long.valueOf(i+1), this.replyTicketDatabase.get(ticket.getReplyId().get(i)));        
-       }
+//       for(int i=0;i<replyTicketRepo.findAll().size()-1;i++){
+//         OneReply.put(Long.valueOf(i+1), this.replyTicketRepo.findAll().get(i));        
+//       }
+       
 
         if (ticket == null) {
             return new ModelAndView(new RedirectView("/ticket/list", true));
         }
         ModelAndView modelAndView = new ModelAndView("view");
-        modelAndView.addObject("ticketId", Long.toString(ticketId));
+        modelAndView.addObject("ticketId", ticketId);
         modelAndView.addObject("ticket", ticket);
-        modelAndView.addObject("selectedReply", OneReply);
+        modelAndView.addObject("numberComment", replyTicketRepo.findParts(ticketId).size());
+        modelAndView.addObject("selectedReply", replyTicketRepo.findParts(ticketId));
         return modelAndView;
     }
     
@@ -252,16 +262,17 @@ public class TicketController {
                 ticket.addAttachment(attachment);
             }
         }
-        this.ticketRepo.findById(ticket.getId());
+        this.ticketRepo.update(ticket);
+//        this.ticketRepo.findById(ticket.getId());
         return new RedirectView("/ticket/view/" + ticket.getId(), true);
     }
 
-//    @RequestMapping(value = "delete/{ticketId}", method = RequestMethod.GET)
-//    public View deleteTicket(@PathVariable("ticketId") long ticketId) {
-//        if (this.ticketRepo.containsKey(ticketId)) {
-//            this.ticketRepo.remove(ticketId);
-//        }
-//        return new RedirectView("/ticket/list", true);
-//    }
+    @RequestMapping(value = "delete/{ticketId}", method = RequestMethod.GET)
+    public View deleteTicket(@PathVariable("ticketId") int ticketId) {
+        if (this.ticketRepo.findById(ticketId) != null) {
+            this.ticketRepo.deleteById(ticketId);
+        }
+        return new RedirectView("/ticket/list", true);
+    }
 
 }

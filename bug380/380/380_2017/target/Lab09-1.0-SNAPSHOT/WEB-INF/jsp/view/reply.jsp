@@ -15,7 +15,7 @@
                    modelAttribute="replyForm">
             <form:label path="replybody">Reply Body</form:label><br/>
             <form:textarea type="text" path="replybody" rows="5" cols="30" /><br/><br/>
-            <b>Attachments</b><br/>
+            <b>Files</b><br/>
             <input type="file" name="replyattachments" multiple="multiple"/><br/><br/>
             <input type="submit" value="Submit"/>
         </form:form>

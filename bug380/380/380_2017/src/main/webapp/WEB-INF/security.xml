@@ -21,7 +21,7 @@
     <b:bean id="ticketUserRepo" class="edu.ouhk.comps380f.dao.TicketUserRepositoryImpl"/>   
     
     <b:bean id="ticketRepo" class="edu.ouhk.comps380f.dao.TicketRepositoryImpl"/>
-
+    <b:bean id="replyTicketRepo" class="edu.ouhk.comps380f.dao.ReplyTicketRepositoryImpl"/>
     <b:bean id="ticketUserService" class="edu.ouhk.comps380f.dao.TicketUserService" />
 
     <b:bean id="bCryptPasswordEncoder"

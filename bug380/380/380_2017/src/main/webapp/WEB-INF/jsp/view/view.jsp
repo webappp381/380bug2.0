@@ -10,7 +10,7 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <h2>Post #${ticketId}: <c:out value="${ticket.subject}" /></h2>
+        <h2>Post #${ticketId}: <c:out value="${ticket.subject}" /></h2>(Number of Comment :<c:out value="${numberComment}" />)
         <security:authorize access="hasRole('ADMIN') or principal.username=='${ticket.customerName}'">            
             [<a href="<c:url value="/ticket/edit/${ticketId}" />">Edit</a>]
         </security:authorize>
@@ -38,10 +38,14 @@
             <c:otherwise>
  
                 <c:forEach items="${selectedReply}" var="entry">
-                    replyid <c:out value="${entry.key}"/>
-                    
-                    (reply content: <c:out value="${entry.value.replybody}" />)
-                  
+                    Reply by: <c:out value="${entry.replyName}"/>
+                    <br/>
+                    reply content: <c:out value="${entry.replybody}" />
+                    <br/><br/>
+                   <security:authorize access="hasRole('ADMIN')">            
+                        [<a href="<c:url value="/reply/delete/${entry.id}" />">Delete</a>]
+                    </security:authorize>
+                        
                     <br /><br />
                 </c:forEach>
             </c:otherwise>

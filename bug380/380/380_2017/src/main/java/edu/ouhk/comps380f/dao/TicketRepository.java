@@ -8,5 +8,6 @@ public interface TicketRepository {
     public List<Ticket> findAll();
     public Ticket findById(int id);
     public int maxId();
-  //  public void deleteByUsername(String username);
+    public void deleteById(int id );
+    public void update(Ticket ticket);
 }

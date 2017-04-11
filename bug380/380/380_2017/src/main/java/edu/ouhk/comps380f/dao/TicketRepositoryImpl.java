@@ -110,15 +110,21 @@ public class TicketRepositoryImpl implements TicketRepository {
         return id;
     }
 
-//    private static final String SQL_DELETE_USER
-//            = "delete from users where username = ?";
-//    private static final String SQL_DELETE_ROLES
-//            = "delete from user_roles where username = ?";
-//
-//    @Override
-//    public void deleteByUsername(String username) {
-//        jdbcOp.update(SQL_DELETE_ROLES, username);
-//        jdbcOp.update(SQL_DELETE_USER, username);
-//    }
+    private static final String SQL_DELETE_TICKET
+            = "delete from ticket where id = ?";
+    
+    @Override
+    public void deleteById(int id) {
+       
+        jdbcOp.update(SQL_DELETE_TICKET, id);
+    }
+    
+    private static final String SQL_UPDATE_TICKET
+            = "update ticket set subject = ?, body = ? where id = ?";
+    
+    @Override
+    public void update(Ticket ticket) {
+        jdbcOp.update(SQL_UPDATE_TICKET, ticket.getSubject(), ticket.getBody(), ticket.getId());
+    }
 
 }
